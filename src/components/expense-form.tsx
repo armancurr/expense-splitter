@@ -133,7 +133,7 @@ export default function ExpenseForm({ people, onAddExpense }: ExpenseFormProps) 
   };
 
   return (
-    <div className="bg-neutral-950 border border-neutral-800 rounded-2xl p-6 md:p-8">
+    <div className="bg-neutral-950 border border-neutral-800 rounded-sm p-6 md:p-8">
       <header className="flex items-start justify-between max-w-md gap-4 mb-6">
         <div>
           <h2 className="text-lime-300 text-xl md:text-2xl font-semibold leading-tight">Add Expense</h2>
@@ -148,16 +148,16 @@ export default function ExpenseForm({ people, onAddExpense }: ExpenseFormProps) 
         {message ? (
           <div
             role="status"
-            className={`px-3 py-2 rounded-md text-sm inline-flex items-center gap-3 ${
+            className={`px-3 py-2 rounded-sm text-sm inline-flex items-center gap-3 border ${
               message.type === 'success'
-                ? 'bg-lime-300/8 text-lime-300 border border-lime-300/20'
-                : 'bg-red-800/12 text-red-300 border border-red-700/20'
+                ? 'bg-lime-300/8 text-lime-300 border-lime-300/20'
+                : 'bg-red-800/12 text-red-300 border-red-700/20'
             }`}
           >
             <span>{message.text}</span>
             <button
               onClick={clearMessage}
-              className="ml-2 p-1 rounded hover:bg-white/4 transition text-neutral-100"
+              className="ml-2 p-1 rounded-sm hover:bg-white/4 transition-colors duration-200 text-neutral-100 active:scale-95"
               aria-label="Dismiss"
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -170,7 +170,7 @@ export default function ExpenseForm({ people, onAddExpense }: ExpenseFormProps) 
 
       {/* warning when few people */}
       {people.length < 2 && (
-        <div className="mb-5 rounded-xl border border-neutral-800 bg-neutral-900 px-4 py-3 text-sm text-neutral-200">
+        <div className="mb-5 rounded-sm border border-neutral-800 bg-neutral-900 px-4 py-3 text-sm text-neutral-200">
           <p className="font-semibold">Cannot add expense yet</p>
           <p className="mt-1 text-xs text-neutral-400">Add at least two people to create expenses.</p>
         </div>
@@ -185,7 +185,7 @@ export default function ExpenseForm({ people, onAddExpense }: ExpenseFormProps) 
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="What was the expense for?"
-            className="w-full px-4 py-3 rounded-lg bg-neutral-900 placeholder-neutral-500 text-neutral-100 focus:ring-0 glow-focus"
+            className="w-full px-4 py-3 rounded-sm bg-neutral-900 border border-neutral-800 placeholder-neutral-500 text-neutral-100 focus:ring-0 focus:outline-none"
           />
         </div>
 
@@ -201,7 +201,7 @@ export default function ExpenseForm({ people, onAddExpense }: ExpenseFormProps) 
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
                 placeholder="0.00"
-                className="w-full pl-8 pr-4 py-3 rounded-lg bg-neutral-900 placeholder-neutral-500 text-neutral-100 focus:ring-0 glow-focus"
+                className="w-full pl-8 pr-4 py-3 rounded-sm bg-neutral-900 border border-neutral-800 placeholder-neutral-500 text-neutral-100 focus:ring-0 focus:outline-none"
               />
             </div>
           </div>
@@ -212,7 +212,7 @@ export default function ExpenseForm({ people, onAddExpense }: ExpenseFormProps) 
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg bg-neutral-900 placeholder-neutral-500 text-neutral-100 focus:ring-0 glow-focus"
+              className="w-full px-4 py-3 rounded-sm bg-neutral-900 border border-neutral-800 placeholder-neutral-500 text-neutral-100 focus:ring-0 focus:outline-none"
             />
           </div>
         </div>
@@ -223,7 +223,7 @@ export default function ExpenseForm({ people, onAddExpense }: ExpenseFormProps) 
           <select
             value={paidBy}
             onChange={(e) => setPaidBy(e.target.value)}
-            className="w-full px-4 py-3 rounded-lg bg-neutral-900 text-neutral-100 focus:ring-0 glow-focus appearance-none"
+            className="w-full px-4 py-3 rounded-sm bg-neutral-900 border border-neutral-800 text-neutral-100 focus:ring-0 focus:outline-none appearance-none"
           >
             <option value="">Select person...</option>
             {people.map((p) => (
@@ -238,13 +238,13 @@ export default function ExpenseForm({ people, onAddExpense }: ExpenseFormProps) 
         <div>
           <label className="block mb-2 text-sm font-semibold text-neutral-200">Split Type</label>
 
-          <div className="inline-flex gap-2 rounded-xl bg-neutral-900 p-1">
+          <div className="inline-flex gap-2 rounded-sm bg-neutral-900 border border-neutral-800 p-1">
             <button
               type="button"
               onClick={() => setSplitType('equal')}
-              className={`px-4 py-2 rounded-lg text-sm font-semibold transition ${
+              className={`px-4 py-2 rounded-sm text-sm font-semibold transition-colors duration-200 active:scale-95 ${
                 splitType === 'equal'
-                  ? 'bg-indigo-600 text-white shadow-sm'
+                  ? 'bg-indigo-600 text-white border border-indigo-400'
                   : 'text-neutral-300 hover:bg-neutral-800'
               }`}
             >
@@ -254,9 +254,9 @@ export default function ExpenseForm({ people, onAddExpense }: ExpenseFormProps) 
             <button
               type="button"
               onClick={() => setSplitType('custom')}
-              className={`px-4 py-2 rounded-lg text-sm font-semibold transition ${
+              className={`px-4 py-2 rounded-sm text-sm font-semibold transition-colors duration-200 active:scale-95 ${
                 splitType === 'custom'
-                  ? 'bg-indigo-600 text-white shadow-sm'
+                  ? 'bg-indigo-600 text-white border border-indigo-400'
                   : 'text-neutral-300 hover:bg-neutral-800'
               }`}
             >
@@ -270,7 +270,7 @@ export default function ExpenseForm({ people, onAddExpense }: ExpenseFormProps) 
           <label className="block mb-3 text-sm font-semibold text-neutral-200">Split Between</label>
 
           {people.length === 0 ? (
-            <div className="rounded-xl border border-neutral-800 bg-neutral-900 p-4 text-center text-neutral-400 italic">
+            <div className="rounded-sm border border-neutral-800 bg-neutral-900 p-4 text-center text-neutral-400 italic">
               No members yet
             </div>
           ) : (
@@ -283,13 +283,22 @@ export default function ExpenseForm({ people, onAddExpense }: ExpenseFormProps) 
                 return (
                   <div
                     key={person}
-                    className={`rounded-xl border p-4 transition ${
+                    className={`flex flex-col items-center gap-3 p-4 rounded-sm border text-center transition-colors duration-200 ${
                       checked
-                        ? 'border-indigo-500/60 bg-indigo-500/10 shadow-sm'
+                        ? 'border-indigo-500/60 bg-indigo-500/10'
                         : 'border-neutral-800 bg-neutral-900 hover:border-neutral-700'
                     }`}
                   >
-                    <div className="flex items-center gap-3">
+                    <div
+                      className={`w-12 h-12 flex items-center justify-center rounded-full text-lg font-medium border ${
+                        checked ? 'bg-indigo-600 text-white border-indigo-400' : 'bg-neutral-800 text-white border-neutral-700'
+                      }`}
+                    >
+                      {initial}
+                    </div>
+                    <div className="text-sm font-medium text-neutral-100 truncate w-full">{displayName}</div>
+
+                    <label className="flex items-center gap-2 cursor-pointer">
                       <input
                         type="checkbox"
                         checked={checked}
@@ -297,32 +306,20 @@ export default function ExpenseForm({ people, onAddExpense }: ExpenseFormProps) 
                         className="h-4 w-4 accent-indigo-600"
                         aria-label={`Include ${displayName}`}
                       />
-                      <div
-                        className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-semibold ${
-                          checked ? 'bg-indigo-600 text-white' : 'bg-neutral-800 text-neutral-200'
-                        }`}
-                      >
-                        {initial}
-                      </div>
-                      <div className="min-w-0">
-                        <div className="truncate text-sm font-semibold text-neutral-100" title={displayName}>
-                          {displayName}
-                        </div>
-                        <div className="text-xs text-neutral-500">
-                          {checked ? 'Included in split' : 'Select to include'}
-                        </div>
-                      </div>
-                    </div>
+                      <span className="text-xs text-neutral-400">
+                        {checked ? 'Included' : 'Include'}
+                      </span>
+                    </label>
 
                     {splitType === 'custom' && checked && (
-                      <div className="mt-3 flex items-center gap-2 rounded-lg bg-neutral-900/60 px-3 py-2">
+                      <div className="w-full flex items-center gap-2 rounded-sm bg-neutral-800 border border-neutral-700 px-3 py-2">
                         <span className="text-sm text-neutral-400">$</span>
                         <input
                           type="number"
                           step="0.01"
                           value={customAmounts[person] !== undefined ? String(customAmounts[person]) : ''}
                           onChange={(e) => handleCustomAmountChange(person, e.target.value)}
-                          className="w-full rounded-md bg-neutral-800 px-3 py-2 text-sm text-neutral-100 focus:ring-0 glow-focus"
+                          className="w-full rounded-sm bg-neutral-900 border border-neutral-800 px-3 py-2 text-sm text-neutral-100 focus:ring-0 focus:outline-none"
                           placeholder="0.00"
                         />
                       </div>
@@ -337,8 +334,8 @@ export default function ExpenseForm({ people, onAddExpense }: ExpenseFormProps) 
         <button
           type="submit"
           disabled={people.length < 2}
-          className={`w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-semibold transition shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
-            people.length < 2 ? 'bg-neutral-900 text-neutral-500 cursor-not-allowed' : 'bg-indigo-600 text-white hover:bg-indigo-700'
+          className={`w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-sm font-semibold transition-colors duration-200 active:scale-95 focus:outline-none focus:ring-0 ${
+            people.length < 2 ? 'bg-neutral-900 border border-neutral-800 text-neutral-500 cursor-not-allowed' : 'bg-indigo-600 border border-indigo-400 text-white hover:bg-indigo-700'
           }`}
         >
           <Plus size={16} weight="bold" />

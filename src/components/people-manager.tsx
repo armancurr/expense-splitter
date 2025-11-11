@@ -24,7 +24,7 @@ export default function PeopleManager({ people, onAddPerson, onRemovePerson }: P
   };
 
   return (
-    <div className="bg-neutral-950 border border-neutral-800 rounded-2xl p-6 md:p-8">
+    <div className="bg-neutral-950 border border-neutral-800 rounded-sm p-6 md:p-8">
       <header className="flex items-start justify-between max-w-md gap-4 mb-6">
         <div>
           <h2 className="text-lime-300 text-xl md:text-2xl font-semibold leading-tight">Manage People</h2>
@@ -42,25 +42,20 @@ export default function PeopleManager({ people, onAddPerson, onRemovePerson }: P
             onChange={(e) => setNameInput(e.target.value)}
             placeholder="Type a name and press +"
             aria-label="Person name"
-            className="w-full px-4 py-3 rounded-lg bg-neutral-900 placeholder-neutral-500 text-neutral-100 focus:ring-0 glow-focus"
+            className="w-full px-6 py-4 rounded-sm bg-neutral-900 placeholder-neutral-500 text-neutral-100 focus:ring-0 focus:outline-none border border-neutral-800"
           />
         </div>
 
         <button
           type="submit"
           onClick={() => handleSubmit()}
-          className="inline-flex items-center gap-2 px-4 py-3 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-semibold transition shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="inline-flex items-center gap-2 px-8 py-4 rounded-sm bg-indigo-600 hover:bg-indigo-700 text-white font-semibold transition-colors duration-200 active:scale-95 border border-indigo-400"
         >
           <Plus size={16} weight="bold" />
         </button>
       </form>
 
       <section>
-        {people.length === 0 ? (
-          <div className="p-6 text-center text-neutral-500">
-            Add at least two people to begin splitting expenses.
-          </div>
-        ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
             {people.map((person) => {
               const displayName = person.trim();
@@ -69,9 +64,9 @@ export default function PeopleManager({ people, onAddPerson, onRemovePerson }: P
               return (
                 <div
                   key={person}
-                  className="person-card flex flex-col items-center gap-3 p-4 rounded-lg bg-neutral-900 text-center"
+                  className="person-card flex flex-col items-center gap-3 p-4 rounded-sm bg-neutral-900 border border-neutral-800 text-center"
                 >
-                  <div className="w-12 h-12 flex items-center justify-center rounded-full bg-neutral-800 text-white text-lg font-medium">
+                  <div className="w-12 h-12 flex items-center justify-center rounded-full bg-neutral-800 text-white text-lg border border-neutral-700 font-medium">
                     {initial}
                   </div>
                   <div className="text-sm font-medium text-neutral-100 truncate w-full">{displayName}</div>
@@ -80,7 +75,7 @@ export default function PeopleManager({ people, onAddPerson, onRemovePerson }: P
                     type="button"
                     onClick={() => onRemovePerson(person)}
                     aria-label={`Remove ${displayName}`}
-                    className="inline-flex items-center gap-2 px-2 py-1 rounded-md text-sm font-medium transition-colors duration-200 hover:bg-white/10 text-neutral-100 active:scale-95"
+                    className="inline-flex items-center gap-2 px-2 py-1 rounded-sm text-sm font-medium transition-colors duration-200 hover:bg-white/10 text-neutral-500 active:scale-95"
                   >
                     Remove
                   </button>
@@ -88,7 +83,6 @@ export default function PeopleManager({ people, onAddPerson, onRemovePerson }: P
               );
             })}
           </div>
-        )}
       </section>
     </div>
   );

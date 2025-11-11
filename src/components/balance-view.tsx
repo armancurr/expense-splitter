@@ -101,7 +101,7 @@ function BalanceView({ people, expenses }: BalanceViewProps) {
   const settlements = simplifyDebts();
 
   return (
-    <div className="bg-neutral-950 border border-neutral-800 rounded-2xl p-6 md:p-8 space-y-8">
+    <div className="bg-neutral-950 border border-neutral-800 rounded-sm p-6 md:p-8 space-y-8">
       <header className="flex items-start justify-between max-w-md gap-4">
         <div>
           <h2 className="text-lime-300 text-xl md:text-2xl font-semibold leading-tight">Balances</h2>
@@ -112,23 +112,23 @@ function BalanceView({ people, expenses }: BalanceViewProps) {
       </header>
 
       {/* Total Spending */}
-      <div className="rounded-2xl border border-neutral-800/80 bg-neutral-900/60 p-5 shadow-sm shadow-black/30">
+      <div className="rounded-sm border border-neutral-800 bg-neutral-900 p-5">
         <div className="flex flex-col gap-1">
           <span className="text-sm font-medium text-neutral-400">Total Group Spending</span>
           <strong className="text-3xl font-bold text-neutral-50 leading-tight">${totalSpending.toFixed(2)}</strong>
         </div>
       </div>
 
-      {/* Individual Balances - small cards in 3-column responsive grid */}
+      {/* Individual Balances - small cards in 2-column responsive grid */}
       <section className="space-y-4">
         <h3 className="text-sm font-semibold text-neutral-300">Individual Balances</h3>
 
         {people.length === 0 ? (
-          <div className="rounded-2xl border border-neutral-800 bg-neutral-900/60 p-6 text-center text-neutral-400 italic">
+          <div className="rounded-sm border border-neutral-800 bg-neutral-900 p-6 text-center text-neutral-400 italic">
             No people added yet
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {people.map(person => {
               const data = balances[person] || { paid: 0, owes: 0, balance: 0 };
               const bal = data.balance;
@@ -139,7 +139,7 @@ function BalanceView({ people, expenses }: BalanceViewProps) {
                 ? 'border-emerald-500/30'
                 : isDebtor
                   ? 'border-rose-500/30'
-                  : 'border-neutral-800/80';
+                  : 'border-neutral-800';
               const amountColor = isCreditor
                 ? 'text-emerald-300'
                 : isDebtor
@@ -154,21 +154,16 @@ function BalanceView({ people, expenses }: BalanceViewProps) {
               return (
                 <div
                   key={person}
-                  className={`rounded-2xl border ${cardBorder} bg-neutral-900/60 p-5 flex flex-col gap-4 shadow-sm shadow-black/20`}
+                  className={`flex flex-col items-center gap-3 p-4 rounded-sm border ${cardBorder} bg-neutral-900 text-center`}
                 >
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-neutral-800/80 text-sm font-semibold text-neutral-200">
-                      {initial}
-                    </div>
-                    <div className="min-w-0">
-                      <div className="truncate text-sm font-semibold text-neutral-100 leading-tight" title={displayName}>
-                        {displayName}
-                      </div>
-                      <div className="text-xs text-neutral-500">{statusText}</div>
-                    </div>
+                  <div className="w-12 h-12 flex items-center justify-center rounded-full bg-neutral-800 text-white text-lg border border-neutral-700 font-medium">
+                    {initial}
                   </div>
+                  <div className="text-sm font-medium text-neutral-100 truncate w-full">{displayName}</div>
+                  
+                  <div className="text-xs text-neutral-500 -mt-1">{statusText}</div>
 
-                  <div className="rounded-xl border border-neutral-800/60 bg-neutral-950/50 px-4 py-3">
+                  <div className="w-full rounded-sm border border-neutral-800 bg-neutral-950 px-4 py-3 mt-1">
                     <div className="text-xs font-medium text-neutral-500">Net balance</div>
                     <div className={`mt-1 text-2xl font-bold ${amountColor}`}>
                       {signedPrefix}${formattedBalance}
@@ -186,7 +181,7 @@ function BalanceView({ people, expenses }: BalanceViewProps) {
         <h3 className="text-sm font-semibold text-neutral-300">Suggested Settlements</h3>
 
         {settlements.length === 0 ? (
-          <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-6 text-center space-y-2">
+          <div className="rounded-sm border border-emerald-500/30 bg-emerald-500/10 p-6 text-center space-y-2">
             <p className="text-sm font-semibold text-emerald-200">All balances are settled</p>
             <p className="text-xs text-emerald-200/80">No payments needed right now.</p>
           </div>
@@ -195,13 +190,13 @@ function BalanceView({ people, expenses }: BalanceViewProps) {
             {settlements.map((settlement, idx) => (
               <div
                 key={idx}
-                className="rounded-2xl border border-neutral-800/80 bg-neutral-900/60 p-5 flex flex-col gap-3 shadow-sm shadow-black/20"
+                className="rounded-sm border border-neutral-800 bg-neutral-900 p-5 flex flex-col gap-3"
               >
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium text-neutral-400">Amount</span>
                   <strong className="text-2xl font-bold text-neutral-50 leading-none">${settlement.amount.toFixed(2)}</strong>
                 </div>
-                <div className="rounded-lg border border-neutral-800/60 bg-neutral-950/50 px-4 py-3 text-sm text-neutral-300 flex items-center justify-between">
+                <div className="rounded-sm border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm text-neutral-300 flex items-center justify-between">
                   <span className="font-semibold text-neutral-100">{settlement.from}</span>
                   <span className="text-neutral-500 text-xs uppercase tracking-wide">pays</span>
                   <span className="font-semibold text-neutral-100">{settlement.to}</span>

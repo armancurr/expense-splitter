@@ -42,7 +42,7 @@ function ExpenseList({ expenses, onDeleteExpense }: ExpenseListProps) {
   };
 
   return (
-    <div className="bg-neutral-950 rounded-sm p-6 md:p-8">
+    <div className="bg-neutral-950 border border-neutral-800 rounded-sm p-6 md:p-8">
       <header className="flex items-start justify-between max-w-md gap-4 mb-6">
         <div>
           <h2 className="text-lime-300 text-xl md:text-2xl font-semibold leading-tight">Expense History</h2>
@@ -55,7 +55,7 @@ function ExpenseList({ expenses, onDeleteExpense }: ExpenseListProps) {
       {/* Empty state */}
       {expenses.length === 0 ? (
         <div className="text-center py-16 px-4">
-          <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 bg-neutral-900">
+          <div className="w-20 h-20 rounded-full border border-neutral-700 flex items-center justify-center mx-auto mb-4 bg-neutral-900">
             <Receipt size={36} className="text-neutral-400" />
           </div>
           <p className="text-neutral-300 text-base">No expenses added yet</p>
@@ -70,7 +70,7 @@ function ExpenseList({ expenses, onDeleteExpense }: ExpenseListProps) {
             return (
               <div
                 key={expense.id}
-                className="rounded-lg bg-neutral-900 overflow-hidden transition-all"
+                className="rounded-sm bg-neutral-900 border border-neutral-800 overflow-hidden transition-all"
               >
                 <div
                   onClick={() => toggleExpand(expense.id)}
@@ -102,7 +102,7 @@ function ExpenseList({ expenses, onDeleteExpense }: ExpenseListProps) {
                   </div>
 
                   <div className="flex items-center gap-3 sm:gap-4 w-full sm:w-auto justify-between sm:justify-end">
-                    <div className="bg-neutral-800 px-3 py-1.5 rounded-md">
+                    <div className="bg-neutral-800 border border-neutral-700 px-3 py-1.5 rounded-sm">
                       <span className="text-neutral-100 font-bold text-base sm:text-lg">${expense.amount.toFixed(2)}</span>
                     </div>
 
@@ -129,10 +129,10 @@ function ExpenseList({ expenses, onDeleteExpense }: ExpenseListProps) {
                       {splits.map(({ person, amount }) => (
                         <div
                           key={person}
-                          className="flex items-center justify-between gap-3 p-3 rounded-lg bg-neutral-900"
+                          className="flex items-center justify-between gap-3 p-3 rounded-sm bg-neutral-900 border border-neutral-800"
                         >
                           <div className="flex items-center gap-3 min-w-0">
-                            <div className="w-8 h-8 rounded-full flex items-center justify-center font-semibold text-xs bg-neutral-800 text-neutral-300">
+                            <div className="w-8 h-8 rounded-full border border-neutral-700 flex items-center justify-center font-semibold text-xs bg-neutral-800 text-neutral-300">
                               {person.charAt(0).toUpperCase()}
                             </div>
                             <div className="min-w-0">
@@ -160,7 +160,7 @@ function ExpenseList({ expenses, onDeleteExpense }: ExpenseListProps) {
                             setExpandedId(null);
                           }
                         }}
-                        className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-semibold transition bg-red-900/20 text-red-300 hover:bg-red-900/30 border border-red-800/30"
+                        className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-sm font-semibold transition-colors duration-200 active:scale-95 bg-red-900/20 text-red-300 hover:bg-red-900/30 border border-red-800/30"
                       >
                         <Trash size={16} weight="bold" />
                         Delete
@@ -168,7 +168,7 @@ function ExpenseList({ expenses, onDeleteExpense }: ExpenseListProps) {
 
                       <button
                         onClick={(e) => { e.stopPropagation(); setExpandedId(null); }}
-                        className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-semibold bg-indigo-600 text-white hover:bg-indigo-700 transition shadow-sm"
+                        className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-sm font-semibold transition-colors duration-200 active:scale-95 bg-indigo-600 border border-indigo-400 text-white hover:bg-indigo-700"
                       >
                         <Receipt size={16} weight="bold" />
                         Done
@@ -183,7 +183,7 @@ function ExpenseList({ expenses, onDeleteExpense }: ExpenseListProps) {
       )}
 
       {/* Footer summary */}
-      <div className="rounded-lg bg-neutral-900 p-3">
+      <div className="rounded-sm bg-neutral-900 border border-neutral-800 p-3">
         <div className="flex items-center justify-center gap-3">
           <div className="flex items-center gap-2">
             <Receipt size={18} weight="bold" className="text-lime-300" />
