@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Expense } from '../types';
-import { Plus, CaretDown, CaretUp } from '@phosphor-icons/react';
+import { Plus, CaretDown, CaretUp, Users } from '@phosphor-icons/react';
 
 interface ExpenseFormProps {
   people: string[];
@@ -178,13 +178,6 @@ export default function ExpenseForm({ people, onAddExpense }: ExpenseFormProps) 
 
       {!isFolded && (
         <>
-      {/* warning when few people */}
-      {people.length < 2 && (
-        <div className="mb-5 rounded-sm border border-neutral-800 bg-neutral-900 px-4 py-3 text-sm text-neutral-200">
-          <p className="font-semibold">Cannot add expense yet</p>
-          <p className="mt-1 text-xs text-neutral-400">Add at least two people to create expenses.</p>
-        </div>
-      )}
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
@@ -202,7 +195,7 @@ export default function ExpenseForm({ people, onAddExpense }: ExpenseFormProps) 
           <div>
             <label className="block mb-2 text-sm font-semibold text-neutral-200">Amount</label>
             <div className="relative">
-              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400 font-semibold">$</span>
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400 font-semibold">₹</span>
               <input
                 type="number"
                 step="0.01"
@@ -287,8 +280,12 @@ export default function ExpenseForm({ people, onAddExpense }: ExpenseFormProps) 
           <label className="block mb-3 text-sm font-semibold text-neutral-200">Split Between</label>
 
           {people.length === 0 ? (
-            <div className="rounded-sm border border-neutral-800 bg-neutral-900 p-4 text-center text-neutral-400 italic">
-              No members yet
+            <div className="text-center py-16 px-4">
+              <div className="w-20 h-20 rounded-full border border-neutral-700 flex items-center justify-center mx-auto mb-4 bg-neutral-900">
+                <Users size={36} className="text-neutral-400 bg-transparent" />
+              </div>
+              <p className="text-neutral-300 text-base">No members yet</p>
+              <p className="text-neutral-400 text-sm mt-1">Add people to split expenses with</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3">
@@ -313,9 +310,9 @@ export default function ExpenseForm({ people, onAddExpense }: ExpenseFormProps) 
                     >
                       {initial}
                     </div>
-                    <div className="text-sm font-medium text-neutral-100 truncate w-full">{displayName}</div>
+                    <div className="text-sm font-medium bg-transparent text-neutral-100 truncate w-full">{displayName}</div>
 
-                    <label className="flex items-center gap-2 cursor-pointer">
+                    <label className="flex items-center gap-2 cursor-pointer bg-transparent">
                       <input
                         type="checkbox"
                         checked={checked}
@@ -323,7 +320,7 @@ export default function ExpenseForm({ people, onAddExpense }: ExpenseFormProps) 
                         className="h-4 w-4 accent-indigo-600"
                         aria-label={`Include ${displayName}`}
                       />
-                      <span className="text-xs text-neutral-400">
+                      <span className="text-xs bg-transparent text-neutral-400">
                         {checked ? 'Included' : 'Include'}
                       </span>
                     </label>
@@ -355,7 +352,7 @@ export default function ExpenseForm({ people, onAddExpense }: ExpenseFormProps) 
             people.length < 2 ? 'bg-neutral-900 border border-neutral-800 text-neutral-500 cursor-not-allowed' : 'bg-indigo-600 border border-indigo-400 text-white hover:bg-indigo-700'
           }`}
         >
-          <Plus size={16} weight="bold" />
+          <Plus size={16} weight="bold" className="bg-transparent" />
           Add Expense
         </button>
       </form>

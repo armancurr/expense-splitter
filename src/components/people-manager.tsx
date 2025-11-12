@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Plus, CaretDown, CaretUp } from '@phosphor-icons/react';
+import { Plus, CaretDown, CaretUp, Users } from '@phosphor-icons/react';
 
 interface PeopleManagerProps {
   people: string[];
@@ -112,38 +112,48 @@ export default function PeopleManager({ people, onAddPerson, onRemovePerson }: P
           onClick={() => handleSubmit()}
           className="inline-flex items-center gap-2 px-8 py-4 rounded-sm bg-indigo-600 hover:bg-indigo-700 text-white font-semibold transition-colors duration-200 active:scale-95 border border-indigo-400"
         >
-          <Plus size={16} weight="bold" />
+          <Plus size={16} weight="bold" className="bg-transparent" />
         </button>
       </form>
 
       <section>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-            {people.map((person) => {
-              const displayName = person.trim();
-              const initial = displayName.charAt(0).toUpperCase() || '?';
+          {people.length === 0 ? (
+            <div className="text-center py-16 px-4">
+              <div className="w-20 h-20 rounded-full border border-neutral-700 flex items-center justify-center mx-auto mb-4 bg-neutral-900">
+                <Users size={36} className="text-neutral-400 bg-transparent" />
+              </div>
+              <p className="text-neutral-300 text-base">No people added yet</p>
+              <p className="text-neutral-400 text-sm mt-1">Add people to start splitting expenses</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+              {people.map((person) => {
+                const displayName = person.trim();
+                const initial = displayName.charAt(0).toUpperCase() || '?';
 
-              return (
-                <div
-                  key={person}
-                  className="person-card flex flex-col items-center gap-3 p-4 rounded-sm bg-neutral-900 border border-neutral-800 text-center"
-                >
-                  <div className="w-12 h-12 flex items-center justify-center rounded-full bg-neutral-800 text-white text-lg border border-neutral-700 font-medium">
-                    {initial}
-                  </div>
-                  <div className="text-sm font-medium text-neutral-100 truncate w-full">{displayName}</div>
-
-                  <button
-                    type="button"
-                    onClick={() => onRemovePerson(person)}
-                    aria-label={`Remove ${displayName}`}
-                    className="inline-flex items-center gap-2 px-2 py-1 rounded-sm text-sm font-medium transition-colors duration-200 hover:bg-white/10 text-neutral-500 active:scale-95"
+                return (
+                  <div
+                    key={person}
+                    className="person-card flex flex-col items-center gap-3 p-4 rounded-sm bg-neutral-900 border border-neutral-800 text-center"
                   >
-                    Remove
-                  </button>
-                </div>
-              );
-            })}
-          </div>
+                    <div className="w-12 h-12 flex items-center justify-center rounded-full bg-neutral-800 text-white text-lg border border-neutral-700 font-medium">
+                      {initial}
+                    </div>
+                    <div className="text-sm font-medium text-neutral-100 bg-transparent truncate w-full">{displayName}</div>
+
+                    <button
+                      type="button"
+                      onClick={() => onRemovePerson(person)}
+                      aria-label={`Remove ${displayName}`}
+                      className="inline-flex items-center gap-2 px-2 py-1 rounded-sm text-sm font-medium transition-colors duration-200 hover:bg-white/10 text-neutral-500 active:scale-95"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+          )}
       </section>
         </>
       )}

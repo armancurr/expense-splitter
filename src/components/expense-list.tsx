@@ -66,7 +66,7 @@ export default function ExpenseList({ expenses, onDeleteExpense }: ExpenseListPr
       {expenses.length === 0 ? (
         <div className="text-center py-16 px-4">
           <div className="w-20 h-20 rounded-full border border-neutral-700 flex items-center justify-center mx-auto mb-4 bg-neutral-900">
-            <Receipt size={36} className="text-neutral-400" />
+            <Receipt size={36} className="text-neutral-400 bg-transparent" />
           </div>
           <p className="text-neutral-300 text-base">No expenses added yet</p>
           <p className="text-neutral-400 text-sm mt-1">Add your first expense to get started</p>
@@ -106,7 +106,7 @@ export default function ExpenseList({ expenses, onDeleteExpense }: ExpenseListPr
 
                   <div className="flex items-center gap-3 sm:gap-4 w-full sm:w-auto justify-between sm:justify-end">
                     <div className="bg-neutral-800 border border-neutral-700 px-3 py-1.5 rounded-sm">
-                      <span className="text-neutral-100 font-bold text-base sm:text-lg">${expense.amount.toFixed(2)}</span>
+                      <span className="text-neutral-100 font-medium bg-transparent text-base sm:text-lg">₹{expense.amount.toFixed(2)}</span>
                     </div>
 
                     <div className={`text-lime-300 transition-transform duration-300 ${isExpanded ? 'rotate-90' : ''}`}>
@@ -117,22 +117,22 @@ export default function ExpenseList({ expenses, onDeleteExpense }: ExpenseListPr
 
                 {isExpanded && (
                   <div className="px-3 sm:px-4 pb-4 pt-2 bg-neutral-800 border-t border-neutral-700">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mb-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mb-4 bg-neutral-800">
                       {splits.map(({ person, amount }) => (
                         <div
                           key={person}
-                          className="flex items-center justify-between gap-3 p-3 rounded-sm bg-neutral-900 border border-neutral-800"
+                          className="flex items-center justify-between gap-3 p-3 rounded-sm bg-neutral-900 border border-neutral-800 bg-transparent"
                         >
                           <div className="flex items-center gap-3 min-w-0">
                             <div className="min-w-0">
-                              <div className="text-sm font-semibold text-neutral-100 truncate" title={person}>
+                              <div className="text-sm font-medium bg-neutral-800 text-neutral-100 truncate" title={person}>
                                 {person}
                               </div>
                             </div>
                           </div>
 
                           <div className="flex items-center gap-1">
-                            <div className="font-semibold text-neutral-100 text-sm">${amount.toFixed(2)}</div>
+                            <div className="font-semibold text-neutral-100 text-sm">₹{amount.toFixed(2)}</div>
                           </div>
                         </div>
                       ))}
@@ -149,7 +149,7 @@ export default function ExpenseList({ expenses, onDeleteExpense }: ExpenseListPr
                         }}
                         className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-sm font-semibold transition-colors duration-200 active:scale-95 bg-red-900/20 text-red-300 hover:bg-red-900/30 border border-red-800/30"
                       >
-                        <Trash size={16} weight="bold" />
+                        <Trash size={16} weight="bold" className="bg-transparent" />
                         Delete
                       </button>
                     </div>

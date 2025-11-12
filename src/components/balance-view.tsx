@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Expense, SimplifiedDebt } from '../types';
-import { CaretDown, CaretUp } from '@phosphor-icons/react';
+import { CaretDown, CaretUp, Wallet, ArrowsClockwise } from '@phosphor-icons/react';
 
 interface BalanceViewProps {
   people: string[];
@@ -120,9 +120,9 @@ export default function BalanceView({ people, expenses }: BalanceViewProps) {
       {!isFolded && (
         <>
       <div className="rounded-sm border border-neutral-800 bg-neutral-900 p-5">
-        <div className="flex flex-col gap-1">
-          <span className="text-sm font-medium text-neutral-400">Total Group Spending</span>
-          <strong className="text-3xl font-bold text-neutral-50 leading-tight">${totalSpending.toFixed(2)}</strong>
+        <div className="flex flex-col gap-1 bg-transparent">
+          <span className="text-sm font-medium text-neutral-400 bg-transparent">Total Group Spending</span>
+          <strong className="text-4xl font-medium text-neutral-50 bg-transparent leading-tight">₹{totalSpending.toFixed(2)}</strong>
         </div>
       </div>
 
@@ -130,7 +130,12 @@ export default function BalanceView({ people, expenses }: BalanceViewProps) {
         <h3 className="text-sm font-semibold text-neutral-300">Individual Balances</h3>
 
         {people.length === 0 ? (
-          <div className="">
+          <div className="text-center py-16 px-4">
+            <div className="w-20 h-20 rounded-full border border-neutral-700 flex items-center justify-center mx-auto mb-4 bg-neutral-900">
+              <Wallet size={36} className="text-neutral-400 bg-transparent" />
+            </div>
+            <p className="text-neutral-300 text-base">No people added yet</p>
+            <p className="text-neutral-400 text-sm mt-1">Add people to see their balances</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -148,7 +153,7 @@ export default function BalanceView({ people, expenses }: BalanceViewProps) {
               const statusText = isCreditor ? 'is owed overall' : isDebtor ? 'owes overall' : 'settled up';
               const displayName = person.trim();
               const initial = displayName.charAt(0).toUpperCase() || '?';
-              const formattedBalance = Math.abs(bal).toFixed(2);'';
+              const formattedBalance = Math.abs(bal).toFixed(2);
 
               return (
                 <div
@@ -158,13 +163,13 @@ export default function BalanceView({ people, expenses }: BalanceViewProps) {
                   <div className="w-12 h-12 flex items-center justify-center rounded-full bg-neutral-800 text-white text-lg border border-neutral-700 font-medium">
                     {initial}
                   </div>
-                  <div className="text-sm font-medium text-neutral-100 truncate w-full">{displayName}</div>
+                  <div className="text-sm font-medium bg-transparent text-neutral-100 truncate w-full">{displayName}</div>
                   
-                  <div className="text-xs text-neutral-500">{statusText}</div>
+                  <div className="text-xs bg-transparent text-neutral-500">{statusText}</div>
 
-                  <div className="w-full rounded-sm px-4 py-3">
-                    <div className={`mt-1 text-4xl font-medium ${amountColor}`}>
-                     ₹ {formattedBalance}
+                  <div className="w-full rounded-sm px-4 py-3 bg-transparent">
+                    <div className={`mt-1 text-4xl font-medium bg-transparent ${amountColor}`}>
+                     ₹{formattedBalance}
                     </div>
                   </div>
                 </div>
@@ -190,7 +195,12 @@ export default function BalanceView({ people, expenses }: BalanceViewProps) {
         {!isSettlementsFolded && (
           <>
             {settlements.length === 0 ? (
-              <div className="">
+              <div className="text-center py-16 px-4">
+                <div className="w-20 h-20 rounded-full border border-neutral-700 flex items-center justify-center mx-auto mb-4 bg-neutral-900">
+                  <ArrowsClockwise size={36} className="text-neutral-400 bg-transparent" />
+                </div>
+                <p className="text-neutral-300 text-base">No settlements needed</p>
+                <p className="text-neutral-400 text-sm mt-1">Everyone is settled up or add expenses to see settlements</p>
               </div>
             ) : (
               <div className="flex flex-col gap-4">
@@ -199,12 +209,12 @@ export default function BalanceView({ people, expenses }: BalanceViewProps) {
                     key={idx}
                     className="rounded-sm border border-neutral-800 bg-neutral-900 p-5 flex items-center justify-between gap-4"
                   >
-                    <div className="flex items-center gap-2 text-sm text-neutral-300">
-                      <span className="font-semibold text-neutral-100">{settlement.from}</span>
-                      <span className="text-neutral-500 text-xs uppercase tracking-wide">pays</span>
-                      <span className="font-semibold text-neutral-100">{settlement.to}</span>
+                    <div className="flex items-center gap-2 text-sm bg-transparent text-neutral-300">
+                      <span className="font-semibold text-neutral-100 bg-transparent">{settlement.from}</span>
+                      <span className="text-neutral-500 text-xs uppercase tracking-wide bg-transparent">pays</span>
+                      <span className="font-semibold text-neutral-100 bg-transparent">{settlement.to}</span>
                     </div>
-                    <strong className="text-2xl font-bold text-neutral-50 leading-none">${settlement.amount.toFixed(2)}</strong>
+                    <strong className="text-2xl font-medium text-neutral-50 bg-transparent leading-none">₹{settlement.amount.toFixed(2)}</strong>
                   </div>
                 ))}
               </div>
