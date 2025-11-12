@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Expense } from '../types';
-import { Plus } from '@phosphor-icons/react';
+import { Plus, CaretDown, CaretUp } from '@phosphor-icons/react';
 
 interface ExpenseFormProps {
   people: string[];
@@ -18,6 +18,7 @@ export default function ExpenseForm({ people, onAddExpense }: ExpenseFormProps) 
   const [splitBetween, setSplitBetween] = useState<string[]>([]);
   const [customAmounts, setCustomAmounts] = useState<Record<string, number>>({});
   const [message, setMessage] = useState<Msg>(null);
+  const [isFolded, setIsFolded] = useState(false);
 
   const timeoutRef = useRef<number | null>(null);
 
@@ -91,9 +92,7 @@ export default function ExpenseForm({ people, onAddExpense }: ExpenseFormProps) 
     }
 
     if (splitType === 'custom') {
-      // sum custom amounts
       const totalCustom = splitBetween.reduce((sum, p) => sum + (customAmounts[p] ?? 0), 0);
-      // allow tiny floating point slack
       if (Math.abs(totalCustom - amt) > 0.01) {
         flash({ text: `Custom amounts must total ${amt.toFixed(2)}`, type: 'error' });
         return null;
@@ -135,15 +134,24 @@ export default function ExpenseForm({ people, onAddExpense }: ExpenseFormProps) 
   return (
     <div className="bg-neutral-950 border border-neutral-800 rounded-sm p-6 md:p-8">
       <header className="flex items-start justify-between max-w-md gap-4 mb-6">
-        <div>
-          <h2 className="text-lime-300 text-xl md:text-2xl font-semibold leading-tight">Add Expense</h2>
+        <div className="flex-1">
+          <div className="flex items-center gap-3">
+            <h2 className="text-lime-300 text-xl md:text-2xl font-semibold leading-tight">Create Expense</h2>
+            <button
+              onClick={() => setIsFolded(!isFolded)}
+              className="p-1 rounded-sm hover:bg-white/4 transition-colors duration-200 text-neutral-400 hover:text-neutral-200 active:scale-95"
+              aria-label={isFolded ? 'Expand' : 'Collapse'}
+              aria-expanded={!isFolded}
+            >
+              {isFolded ? <CaretDown size={20} weight="bold" /> : <CaretUp size={20} weight="bold" />}
+            </button>
+          </div>
           <p className="text-neutral-400 text-sm md:text-base mt-1">
-            Add a new group expense.
+            Create a new expense for your group.
           </p>
         </div>
       </header>
 
-      {/* message */}
       <div aria-live="polite" className="min-h-[40px] mb-4">
         {message ? (
           <div
@@ -168,6 +176,8 @@ export default function ExpenseForm({ people, onAddExpense }: ExpenseFormProps) 
         ) : null}
       </div>
 
+      {!isFolded && (
+        <>
       {/* warning when few people */}
       {people.length < 2 && (
         <div className="mb-5 rounded-sm border border-neutral-800 bg-neutral-900 px-4 py-3 text-sm text-neutral-200">
@@ -177,7 +187,6 @@ export default function ExpenseForm({ people, onAddExpense }: ExpenseFormProps) 
       )}
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* description */}
         <div>
           <label className="block mb-2 text-sm font-semibold text-neutral-200">Description</label>
           <input
@@ -189,7 +198,6 @@ export default function ExpenseForm({ people, onAddExpense }: ExpenseFormProps) 
           />
         </div>
 
-        {/* amount + date */}
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <div>
             <label className="block mb-2 text-sm font-semibold text-neutral-200">Amount</label>
@@ -217,13 +225,12 @@ export default function ExpenseForm({ people, onAddExpense }: ExpenseFormProps) 
           </div>
         </div>
 
-        {/* paid by */}
         <div>
           <label className="block mb-2 text-sm font-semibold text-neutral-200">Paid By</label>
           <select
             value={paidBy}
             onChange={(e) => setPaidBy(e.target.value)}
-            className="w-full px-4 py-3 rounded-sm bg-neutral-900 border border-neutral-800 text-neutral-100 focus:ring-0 focus:outline-none appearance-none"
+            className="w-full px-4 py-3 rounded-sm bg-neutral-900 border border-neutral-800 text-neutral-400 focus:ring-0 focus:outline-none appearance-none"
           >
             <option value="">Select person...</option>
             {people.map((p) => (
@@ -234,34 +241,44 @@ export default function ExpenseForm({ people, onAddExpense }: ExpenseFormProps) 
           </select>
         </div>
 
-        {/* split type */}
         <div>
           <label className="block mb-2 text-sm font-semibold text-neutral-200">Split Type</label>
-
-          <div className="inline-flex gap-2 rounded-sm bg-neutral-900 border border-neutral-800 p-1">
-            <button
-              type="button"
-              onClick={() => setSplitType('equal')}
-              className={`px-4 py-2 rounded-sm text-sm font-semibold transition-colors duration-200 active:scale-95 ${
+          <div className="flex gap-3">
+            <label
+              className={`flex flex-1 items-center gap-3 px-4 py-3 rounded-sm border text-sm font-semibold cursor-pointer transition-colors duration-200 ${
                 splitType === 'equal'
-                  ? 'bg-indigo-600 text-white border border-indigo-400'
-                  : 'text-neutral-300 hover:bg-neutral-800'
+                  ? 'border-indigo-400 bg-indigo-500/15 text-neutral-100'
+                  : 'border-neutral-800 bg-neutral-900 text-neutral-300 hover:border-neutral-700'
               }`}
             >
-              Equal
-            </button>
+              <input
+                type="radio"
+                name="split-type"
+                value="equal"
+                checked={splitType === 'equal'}
+                onChange={() => setSplitType('equal')}
+                className="h-4 w-4 accent-indigo-500"
+              />
+              Equal Split
+            </label>
 
-            <button
-              type="button"
-              onClick={() => setSplitType('custom')}
-              className={`px-4 py-2 rounded-sm text-sm font-semibold transition-colors duration-200 active:scale-95 ${
+            <label
+              className={`flex flex-1 items-center gap-3 px-4 py-3 rounded-sm border text-sm font-semibold cursor-pointer transition-colors duration-200 ${
                 splitType === 'custom'
-                  ? 'bg-indigo-600 text-white border border-indigo-400'
-                  : 'text-neutral-300 hover:bg-neutral-800'
+                  ? 'border-indigo-400 bg-indigo-500/15 text-neutral-100'
+                  : 'border-neutral-800 bg-neutral-900 text-neutral-300 hover:border-neutral-700'
               }`}
             >
-              Custom
-            </button>
+              <input
+                type="radio"
+                name="split-type"
+                value="custom"
+                checked={splitType === 'custom'}
+                onChange={() => setSplitType('custom')}
+                className="h-4 w-4 accent-indigo-500"
+              />
+              Custom Split
+            </label>
           </div>
         </div>
 
@@ -342,6 +359,8 @@ export default function ExpenseForm({ people, onAddExpense }: ExpenseFormProps) 
           Add Expense
         </button>
       </form>
+        </>
+      )}
     </div>
   );
 }

@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { MinusCircle, Plus } from '@phosphor-icons/react';
+import { useEffect, useRef, useState } from 'react';
+import { Plus, CaretDown, CaretUp } from '@phosphor-icons/react';
 
 interface PeopleManagerProps {
   people: string[];
@@ -7,33 +7,94 @@ interface PeopleManagerProps {
   onRemovePerson: (name: string) => void;
 }
 
+type Msg = { text: string; type: 'success' | 'error' } | null;
+
 export default function PeopleManager({ people, onAddPerson, onRemovePerson }: PeopleManagerProps) {
   const [nameInput, setNameInput] = useState('');
+  const [message, setMessage] = useState<Msg>(null);
+  const [isFolded, setIsFolded] = useState(false);
+
+  const timeoutRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) window.clearTimeout(timeoutRef.current);
+    };
+  }, []);
+
+  const clearMessage = () => setMessage(null);
+  const flash = (m: Msg, ms = 3000) => {
+    setMessage(m);
+    if (timeoutRef.current) window.clearTimeout(timeoutRef.current);
+    timeoutRef.current = window.setTimeout(() => setMessage(null), ms);
+  };
 
   const normalize = (s: string) => s.trim().replace(/\s+/g, ' ');
 
   const handleSubmit = (e?: React.FormEvent) => {
     e?.preventDefault();
     const trimmed = normalize(nameInput);
-    if (!trimmed) return;
+    if (!trimmed) {
+      flash({ text: 'Please enter a name', type: 'error' });
+      return;
+    }
 
     const ok = onAddPerson(trimmed);
     if (ok) {
       setNameInput('');
+      flash({ text: 'Person added successfully', type: 'success' });
+    } else {
+      flash({ text: 'This person already exists', type: 'error' });
     }
   };
 
   return (
     <div className="bg-neutral-950 border border-neutral-800 rounded-sm p-6 md:p-8">
       <header className="flex items-start justify-between max-w-md gap-4 mb-6">
-        <div>
-          <h2 className="text-lime-300 text-xl md:text-2xl font-semibold leading-tight">Manage People</h2>
+        <div className="flex-1">
+          <div className="flex items-center gap-3">
+            <h2 className="text-lime-300 text-xl md:text-2xl font-semibold leading-tight">Manage People</h2>
+            <button
+              onClick={() => setIsFolded(!isFolded)}
+              className="p-1 rounded-sm hover:bg-white/4 transition-colors duration-200 text-neutral-400 hover:text-neutral-200 active:scale-95"
+              aria-label={isFolded ? 'Expand' : 'Collapse'}
+              aria-expanded={!isFolded}
+            >
+              {isFolded ? <CaretDown size={20} weight="bold" /> : <CaretUp size={20} weight="bold" />}
+            </button>
+          </div>
           <p className="text-neutral-400 text-sm md:text-base mt-1">
             Add people to share the expenses with.
           </p>
         </div>
       </header>
 
+      <div aria-live="polite" className="min-h-[40px] mb-4">
+        {message ? (
+          <div
+            role="status"
+            className={`px-3 py-2 rounded-sm text-sm inline-flex items-center gap-3 border ${
+              message.type === 'success'
+                ? 'bg-lime-300/8 text-lime-300 border-lime-300/20'
+                : 'bg-red-800/12 text-red-300 border-red-700/20'
+            }`}
+          >
+            <span>{message.text}</span>
+            <button
+              onClick={clearMessage}
+              className="ml-2 p-1 rounded-sm hover:bg-white/4 transition-colors duration-200 text-neutral-100 active:scale-95"
+              aria-label="Dismiss"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+          </div>
+        ) : null}
+      </div>
+
+      {!isFolded && (
+        <>
       <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="flex gap-3 mb-6">
         <div className="relative flex-1">
           <input
@@ -84,6 +145,8 @@ export default function PeopleManager({ people, onAddPerson, onRemovePerson }: P
             })}
           </div>
       </section>
+        </>
+      )}
     </div>
   );
 }

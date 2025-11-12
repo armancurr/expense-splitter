@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Expense } from '../types';
 import {
   CaretRight,
   Trash,
   Receipt,
-  CalendarBlank,
-  User,
-  SplitHorizontal,
-  CurrencyDollar
+  CaretDown,
+  CaretUp
 } from '@phosphor-icons/react';
 
 interface ExpenseListProps {
@@ -15,8 +13,9 @@ interface ExpenseListProps {
   onDeleteExpense: (id: number) => void;
 }
 
-function ExpenseList({ expenses, onDeleteExpense }: ExpenseListProps) {
+export default function ExpenseList({ expenses, onDeleteExpense }: ExpenseListProps) {
   const [expandedId, setExpandedId] = useState<number | null>(null);
+  const [isFolded, setIsFolded] = useState(false);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -44,15 +43,26 @@ function ExpenseList({ expenses, onDeleteExpense }: ExpenseListProps) {
   return (
     <div className="bg-neutral-950 border border-neutral-800 rounded-sm p-6 md:p-8">
       <header className="flex items-start justify-between max-w-md gap-4 mb-6">
-        <div>
-          <h2 className="text-lime-300 text-xl md:text-2xl font-semibold leading-tight">Expense History</h2>
+        <div className="flex-1">
+          <div className="flex items-center gap-3">
+            <h2 className="text-lime-300 text-xl md:text-2xl font-semibold leading-tight">Past Expenses</h2>
+            <button
+              onClick={() => setIsFolded(!isFolded)}
+              className="p-1 rounded-sm hover:bg-white/4 transition-colors duration-200 text-neutral-400 hover:text-neutral-200 active:scale-95"
+              aria-label={isFolded ? 'Expand' : 'Collapse'}
+              aria-expanded={!isFolded}
+            >
+              {isFolded ? <CaretDown size={20} weight="bold" /> : <CaretUp size={20} weight="bold" />}
+            </button>
+          </div>
           <p className="text-neutral-400 text-sm md:text-base mt-1">
-            {expenses.length} {expenses.length === 1 ? 'expense' : 'expenses'} recorded
+            Track your past expenses - {expenses.length} {expenses.length === 1 ? 'expense' : 'expenses'} recorded
           </p>
         </div>
       </header>
 
-      {/* Empty state */}
+      {!isFolded && (
+        <>
       {expenses.length === 0 ? (
         <div className="text-center py-16 px-4">
           <div className="w-20 h-20 rounded-full border border-neutral-700 flex items-center justify-center mx-auto mb-4 bg-neutral-900">
@@ -81,22 +91,15 @@ function ExpenseList({ expenses, onDeleteExpense }: ExpenseListProps) {
                 >
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-3 mb-2">
-                      <Receipt size={14} weight="bold" className="text-lime-300" />
                       <h4 className="text-neutral-100 font-semibold text-sm sm:text-base truncate">{expense.description}</h4>
                     </div>
 
                     <div className="flex flex-wrap gap-3 text-neutral-400 text-xs sm:text-sm">
                       <span className="flex items-center gap-1">
-                        <CalendarBlank size={12} weight="bold" />
                         {formatDate(expense.date)}
                       </span>
                       <span className="flex items-center gap-1">
-                        <User size={12} weight="bold" />
                         Paid by {expense.paidBy}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <SplitHorizontal size={12} weight="bold" />
-                        {expense.splitType === 'equal' ? 'Equal split' : 'Custom split'}
                       </span>
                     </div>
                   </div>
@@ -114,17 +117,6 @@ function ExpenseList({ expenses, onDeleteExpense }: ExpenseListProps) {
 
                 {isExpanded && (
                   <div className="px-3 sm:px-4 pb-4 pt-2 bg-neutral-800 border-t border-neutral-700">
-                    {/* Split details header */}
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center gap-2">
-                        <SplitHorizontal size={16} weight="bold" className="text-lime-300" />
-                        <h5 className="text-neutral-100 font-semibold text-sm">Split Details</h5>
-                      </div>
-
-                      <div className="text-sm text-neutral-400">{splits.length} {splits.length === 1 ? 'member' : 'members'}</div>
-                    </div>
-
-                    {/* Splits list as small cards (responsive 1/2/3 columns) */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mb-4">
                       {splits.map(({ person, amount }) => (
                         <div
@@ -132,19 +124,14 @@ function ExpenseList({ expenses, onDeleteExpense }: ExpenseListProps) {
                           className="flex items-center justify-between gap-3 p-3 rounded-sm bg-neutral-900 border border-neutral-800"
                         >
                           <div className="flex items-center gap-3 min-w-0">
-                            <div className="w-8 h-8 rounded-full border border-neutral-700 flex items-center justify-center font-semibold text-xs bg-neutral-800 text-neutral-300">
-                              {person.charAt(0).toUpperCase()}
-                            </div>
                             <div className="min-w-0">
                               <div className="text-sm font-semibold text-neutral-100 truncate" title={person}>
                                 {person}
                               </div>
-                              <div className="text-xs text-neutral-400">Member</div>
                             </div>
                           </div>
 
                           <div className="flex items-center gap-1">
-                            <CurrencyDollar size={14} weight="bold" className="text-lime-300" />
                             <div className="font-semibold text-neutral-100 text-sm">${amount.toFixed(2)}</div>
                           </div>
                         </div>
@@ -165,14 +152,6 @@ function ExpenseList({ expenses, onDeleteExpense }: ExpenseListProps) {
                         <Trash size={16} weight="bold" />
                         Delete
                       </button>
-
-                      <button
-                        onClick={(e) => { e.stopPropagation(); setExpandedId(null); }}
-                        className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-sm font-semibold transition-colors duration-200 active:scale-95 bg-indigo-600 border border-indigo-400 text-white hover:bg-indigo-700"
-                      >
-                        <Receipt size={16} weight="bold" />
-                        Done
-                      </button>
                     </div>
                   </div>
                 )}
@@ -181,19 +160,8 @@ function ExpenseList({ expenses, onDeleteExpense }: ExpenseListProps) {
           })}
         </div>
       )}
-
-      {/* Footer summary */}
-      <div className="rounded-sm bg-neutral-900 border border-neutral-800 p-3">
-        <div className="flex items-center justify-center gap-3">
-          <div className="flex items-center gap-2">
-            <Receipt size={18} weight="bold" className="text-lime-300" />
-            <span className="text-neutral-200 font-medium text-sm">Total Expenses</span>
-          </div>
-          <span className="text-neutral-100 font-bold text-base">{expenses.length}</span>
-        </div>
-      </div>
+        </>
+      )}
     </div>
   );
 }
-
-export default ExpenseList;
