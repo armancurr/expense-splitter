@@ -54,8 +54,8 @@ export default function App() {
             className="relative md:absolute bottom-0 md:bottom-8 right-0 md:right-8 mt-4 md:mt-0 inline-flex items-center gap-2 px-4 py-2 rounded-sm bg-neutral-900 border border-neutral-800 text-neutral-100 hover:bg-neutral-800 hover:border-neutral-700 transition-colors duration-300 font-medium text-sm md:text-base w-fit"
           >
             <GithubLogo size={22} className="bg-transparent"/>
-            <span className="hidden sm:inline">View Source Code</span>
-            <span className="sm:hidden">Source</span>
+            <span className="hidden sm:inline bg-transparent">View Source Code</span>
+            <span className="sm:hidden bg-transparent">Source</span>
           </a>
         </div>
       </header>

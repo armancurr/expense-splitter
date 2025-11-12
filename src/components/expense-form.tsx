@@ -275,7 +275,6 @@ export default function ExpenseForm({ people, onAddExpense }: ExpenseFormProps) 
           </div>
         </div>
 
-        {/* split between */}
         <div>
           <label className="block mb-3 text-sm font-semibold text-neutral-200">Split Between</label>
 
@@ -326,14 +325,14 @@ export default function ExpenseForm({ people, onAddExpense }: ExpenseFormProps) 
                     </label>
 
                     {splitType === 'custom' && checked && (
-                      <div className="w-full flex items-center gap-2 rounded-sm bg-neutral-800 border border-neutral-700 px-3 py-2">
-                        <span className="text-sm text-neutral-400">$</span>
+                      <div className="w-full flex items-center bg-neutral-800 border border-neutral-700 px-3 py-2">
+                        <span className="text-sm text-neutral-400 bg-transparent">₹</span>
                         <input
                           type="number"
                           step="0.01"
                           value={customAmounts[person] !== undefined ? String(customAmounts[person]) : ''}
                           onChange={(e) => handleCustomAmountChange(person, e.target.value)}
-                          className="w-full rounded-sm bg-neutral-900 border border-neutral-800 px-3 py-2 text-sm text-neutral-100 focus:ring-0 focus:outline-none"
+                          className="w-full px-3 py-2 text-sm text-neutral-100 focus:ring-0 focus:outline-none bg-transparent"
                           placeholder="0.00"
                         />
                       </div>
@@ -353,7 +352,7 @@ export default function ExpenseForm({ people, onAddExpense }: ExpenseFormProps) 
           }`}
         >
           <Plus size={16} weight="bold" className="bg-transparent" />
-          Add Expense
+          Create Expense
         </button>
       </form>
         </>
