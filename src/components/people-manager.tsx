@@ -95,7 +95,7 @@ export default function PeopleManager({ people, onAddPerson, onRemovePerson }: P
 
       {!isFolded && (
         <>
-      <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="flex gap-3 mb-6">
+      <form onSubmit={handleSubmit} className="flex gap-3 mb-6">
         <div className="relative flex-1">
           <input
             type="text"
@@ -109,7 +109,6 @@ export default function PeopleManager({ people, onAddPerson, onRemovePerson }: P
 
         <button
           type="submit"
-          onClick={() => handleSubmit()}
           className="inline-flex items-center gap-2 px-8 py-4 rounded-sm bg-indigo-600 hover:bg-indigo-700 text-white font-semibold transition-colors duration-200 active:scale-95 border border-indigo-400"
         >
           <Plus size={16} weight="bold" className="bg-transparent" />
