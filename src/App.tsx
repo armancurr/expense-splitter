@@ -36,7 +36,16 @@ export default function App() {
   return (
     <div className="min-h-screen bg-neutral-950">
       <header className="p-4 sm:p-6 md:p-8 text-left">
-        {/* <h1 className="text-black uppercase text-4xl font-bold">Expense Splitter</h1> */}
+        <div className="max-w-7xl p-6 md:p-8 mx-auto space-y-4 rounded-sm border border-neutral-800">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-white">
+            Expense Splitter
+          </h1>
+          <p className="max-w-3xl text-sm sm:text-base text-neutral-300">
+            Add the people you&apos;re planning with, log your shared purchases, and see
+            balanced payouts instantly. Expense Splitter keeps everyone aligned without
+            the spreadsheet hassle.
+          </p>
+        </div>
       </header>
 
       <main className="p-2 sm:p-4 md:p-6">
